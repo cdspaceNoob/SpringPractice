@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <c:url var="root" value="/"/>	<!-- ContextPath를 포함하는 절대 경로 구하기. -->
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--     <c:url var="root" value="/"/>	<!-- ContextPath를 포함하는 절대 경로 구하기. --> --%>
+<c:set var="root" value="${pageContext.request.contextPath }/"/>	<!-- contextPath 구하기. -->
 <!DOCTYPE html>
 <html>
 	<head>
