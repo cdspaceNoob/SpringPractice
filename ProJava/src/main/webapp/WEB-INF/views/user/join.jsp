@@ -6,7 +6,28 @@
 <c:set var="root" value="${pageContext.request.contextPath }/"/>	<!-- contextPath 구하기. -->
 <!DOCTYPE html>
 <html>
-
+	<script>
+		function checkUserIdExist(){
+			let user_id = $("#user_id").val();
+			
+			if(user_id.length == 0){
+				alert("아이디를 입력해주세요");
+			}
+			
+			$.ajax({
+				url: "${root}user/checkUserIdExist/" + user_id,
+				type: "get",
+				dataType: "text",
+				success: function(result){
+					if(result.trim() == "true"){
+						alert("사용할 수 있는 아이디입니다.");
+					}else{
+						alert("이미 존재하는 아이디입니다.");
+					}
+				}
+			})
+		}
+	</script>
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +59,7 @@
 									<div class="input-group">
 										<form:input path="user_id" class="form-control"/>
 										<div class="input-group-append">
-											<button type="button" class="btn btn-primary">중복확인</button>
+											<button type="button" class="btn btn-primary" onclick="checkUserIdExist()">중복확인</button>
 										</div>
 									</div>
 									<form:errors path="user_id" style="color:red"/>

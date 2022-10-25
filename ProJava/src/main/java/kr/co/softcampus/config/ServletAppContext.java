@@ -22,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import kr.co.softcampus.interceptor.NavInterceptor;
 import kr.co.softcampus.mapper.BoardMapper;
 import kr.co.softcampus.mapper.NavMapper;
+import kr.co.softcampus.mapper.UserMapper;
 import kr.co.softcampus.service.NavService;
 
 // 얘는 Spring MVC 프로젝트에 관련된 설정을 담고 있는 클래스다.
@@ -97,6 +98,15 @@ public class ServletAppContext implements WebMvcConfigurer{
 	@Bean
 	public MapperFactoryBean<NavMapper> getNavMapper(SqlSessionFactory factory) throws Exception {
 		MapperFactoryBean<NavMapper> factoryBean = new MapperFactoryBean<NavMapper>(NavMapper.class);
+		factoryBean.setSqlSessionFactory(factory);
+		
+		return factoryBean;
+	}
+	
+	// 쿼리 전송을 위한 객체. UserMapper를 관리한다. 
+	@Bean
+	public MapperFactoryBean<UserMapper> getUserMapper(SqlSessionFactory factory) throws Exception {
+		MapperFactoryBean<UserMapper> factoryBean = new MapperFactoryBean<UserMapper>(UserMapper.class);
 		factoryBean.setSqlSessionFactory(factory);
 		
 		return factoryBean;
