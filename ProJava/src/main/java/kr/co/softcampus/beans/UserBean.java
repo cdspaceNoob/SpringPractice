@@ -23,6 +23,12 @@ public class UserBean {
 	@Pattern(regexp = "[a-zA-Z0-9]*")
 	private String user_pw2;		// 비밀번호 확인을 위해서. 
 	
+	private boolean userIdExist;
+	
+	public UserBean() {				// 중복확인 수행 여부를 표시하기 위해서. 초깃값은 false.
+		this.userIdExist = false;
+	}
+	
 	public int getUser_idx() {
 		return user_idx;
 	}
@@ -52,6 +58,12 @@ public class UserBean {
 	}
 	public void setUser_pw2(String user_pw2) {
 		this.user_pw2 = user_pw2;
+	}
+	public boolean isUserIdExist() {
+		return userIdExist;
+	}
+	public void setUserIdExist(boolean userIdExist) {
+		this.userIdExist = userIdExist;
 	}
 	
 }

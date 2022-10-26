@@ -1,53 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
-			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			 xmlns:beans="http://www.springframework.org/schema/beans"
-			 xmlns:context="http://www.springframework.org/schema/context"
-			 xsi:schemaLocation="http://www.springframework.org/schema/mvc
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
 								 http://www.springframework.org/schema/mvc/spring-mvc.xsd
 								 http://www.springframework.org/schema/beans
 								 http://www.springframework.org/schema/beans/spring-beans.xsd
 								 http://www.springframework.org/schema/context
 								 http://www.springframework.org/schema/context/spring-context.xsd">
 
-<!-- 스캔한 패키지 내부에 클래스 중 Controller Annotation을 가지고 있는 클래스들을 Controller로 로딩. -->
-<annotation-driven/>
+	<!-- 스캔한 패키지 내부의 클래스 중 Controller Annotation을 가지고 있는 클래스들을 Controller로 로딩. -->
+	<annotation-driven />
 
-<!-- 스캔할 Bean들이 모여 있는 패키지를 지정한다. -->
-<context:component-scan base-package="kr.co.softcampus.controller"/>
+	<!-- 스캔할 Bean들이 모여 있는 패키지를 지정한다. -->
+	<context:component-scan
+		base-package="kr.co.softcampus.controller" />
+	<context:component-scan
+		base-package="kr.co.softcampus.dao" />
+	<context:component-scan
+		base-package="kr.co.softcampus.service" />
 
-<!-- Controller의 메서드에서 반환하는 문자 앞 뒤에 붙일 경로를 설정한다. -->
-<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	<beans:property name="prefix" value="/WEB-INF/views/"/>
-	<beans:property name="suffix" value=".jsp"/> 
-</beans:bean>
+	<!-- Controller의 메서드에서 반환하는 문자 앞 뒤에 붙일 경로를 설정한다. -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
 
-<!-- 정적 파일(이미지, 사운드, 동영상, JS, CSS 등) 경로 설정. -->
-<resources mapping="/**" location="/resources/"/>
+	<!-- 정적 파일(이미지, 사운드, 동영상, JS, CSS 등) 경로 설정. -->
+	<resources mapping="/**" location="/resources/" />
 
-<!-- properties 파일의 내용을 불러오기 위해 Bean으로 정의한다. -->
-<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-	<beans:property name="location">
-		<beans:value>/WEB-INF/properties/db.properties</beans:value>
-	</beans:property>
-</beans:bean>
+	<!-- properties 파일의 내용을 불러오기 위해 Bean으로 정의한다. -->
+	<beans:bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<beans:property name="location">
+			<beans:value>/WEB-INF/properties/db.properties</beans:value>
+		</beans:property>
+	</beans:bean>
 
-<beans:bean class="org.apache.commons.dbcp2.BasicDataSource" id="basic_data_source">
-	<beans:property name="driverClassName" value="${db.classname}"/>
-	<beans:property name="url" value="${db.url}"/>
-	<beans:property name="username" value="${db.username}"/>
-	<beans:property name="password" value="${db.password}"/>
-</beans:bean>
+	<beans:bean class="org.apache.commons.dbcp2.BasicDataSource"
+		id="basic_data_source">
+		<beans:property name="driverClassName"
+			value="${db.classname}" />
+		<beans:property name="url" value="${db.url}" />
+		<beans:property name="username" value="${db.username}" />
+		<beans:property name="password" value="${db.password}" />
+	</beans:bean>
 
-<!-- SqlSessionFactoryBean 정의. -->
-<beans:bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSession">
-	<beans:property name="dataSource" ref="basic_data_source"/>
-	<beans:property name="mapperLocations" value="/WEB-INF/mapper/*xml"/>
-</beans:bean>
+	<!-- SqlSessionFactoryBean 정의. Mapper의 경로를 지정하고 해당 경로의 모든 *xml 파일을 mapper로 쓰겠다고 선언하는 내용이다. -->
+	<!-- 따라서 별도의 추가 작업을 하지 않아도 된다. Mapper 등록이 끝난 것이다. -->
+	<beans:bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="sqlSession">
+		<beans:property name="dataSource"
+			ref="basic_data_source" />
+		<beans:property name="mapperLocations"
+			value="/WEB-INF/mapper/*xml" />
+	</beans:bean>
 
-<!-- mapper Bean 정의. -->
-<beans:bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSessionTemplate">
-	<beans:constructor-arg index="0" ref="sqlSession"/>
-</beans:bean>
+	<!-- mapper Bean 정의. -->
+	<beans:bean class="org.mybatis.spring.SqlSessionTemplate"
+		id="sqlSessionTemplate">
+		<beans:constructor-arg index="0"
+			ref="sqlSession" />
+	</beans:bean>
+
+	<!-- AOP: Interceptor 정의. -->
+	<interceptors>
+		<interceptor>
+			<!-- 경로를 지정한다. -->
+			<mapping path="/**" />
+			<!-- interceptor를 구현해둔 클래스를 지정한다. -->
+			<beans:bean
+				class="kr.co.softcampus.interceptor.TopMenuInterceptor" />
+		</interceptor>
+	</interceptors>
+
+	<!-- error 메시지 등록. -->
+	<beans:bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource">
+		<beans:property name="basenames">
+			<beans:list>
+				<beans:value>/WEB-INF/properties/error_message</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<!-- 메시지 접근을 위한 접근자 등록. -->
+	<beans:bean class="org.springframework.context.support.MessageSourceAccessor">
+		<beans:constructor-arg ref="messageSource"/>
+	</beans:bean>
 
 </beans:beans>

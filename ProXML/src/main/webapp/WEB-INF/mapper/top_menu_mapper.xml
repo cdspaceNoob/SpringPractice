@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.-//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+						
+<mapper namespace="topmenu">
+	
+	<select id="getTopmenu_list" resultType="kr.co.softcampus.beans.BoardInfoBean">
+	<!-- resultType은 반환값. 한 row에 담길 것이 무엇인지를 결정. -->
+		<![CDATA[
+			 select board_info_idx, board_info_name from board_info_table order by board_info_idx
+		]]>
+	</select>
+
+</mapper>
