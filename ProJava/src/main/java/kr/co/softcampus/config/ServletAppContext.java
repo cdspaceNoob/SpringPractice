@@ -1,5 +1,7 @@
 package kr.co.softcampus.config;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.co.softcampus.beans.UserBean;
 import kr.co.softcampus.interceptor.NavInterceptor;
 import kr.co.softcampus.mapper.BoardMapper;
 import kr.co.softcampus.mapper.NavMapper;
@@ -48,6 +51,9 @@ public class ServletAppContext implements WebMvcConfigurer{
 	
 	@Autowired
 	private NavService navService;
+	
+	@Resource(name="loginUserBean")	// 로그인 검증을 위해 session 영역에 저장되어 있을 loginUserBean을 가져온다. 이걸 인터셉터에 쓰기 위해 등록한다. 
+	private UserBean loginUserBean;
 	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -118,7 +124,7 @@ public class ServletAppContext implements WebMvcConfigurer{
 		// TODO Auto-generated method stub
 		WebMvcConfigurer.super.addInterceptors(registry);
 		
-		NavInterceptor navInterceptor = new NavInterceptor(navService);	// Interceptor를 등록하는 쪽에서 주입받고, 생성자에 넣어준다. 
+		NavInterceptor navInterceptor = new NavInterceptor(navService, loginUserBean);	// Interceptor를 등록하는 쪽에서 주입받고, 생성자에 넣어준다. 
 		
 		InterceptorRegistration reg1 = registry.addInterceptor(navInterceptor);
 		reg1.addPathPatterns("/**");
