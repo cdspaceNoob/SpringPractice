@@ -46,4 +46,19 @@ public class UserService {
 			loginUserBean.setUserLogin(true);	// 이 정보로 Controller에서 로그인 성공 여부를 판단할 것이다.
 		}
 	}// eom
+	
+	public void getModifyUserInfo(UserBean modifyUserBean) {
+		UserBean tempModifyUserBean = userDao.getModifyUserInfo(loginUserBean.getUser_idx());
+		
+		modifyUserBean.setUser_id(tempModifyUserBean.getUser_id());
+		modifyUserBean.setUser_name(tempModifyUserBean.getUser_name());
+		modifyUserBean.setUser_idx(loginUserBean.getUser_idx());
+	}// eom
+	
+	public void modifyUserBeanInfo(UserBean modifyUserBean) {
+
+		modifyUserBean.setUser_idx(loginUserBean.getUser_idx());
+		
+		userDao.modifyUserInfo(modifyUserBean);
+	}// eom
 }

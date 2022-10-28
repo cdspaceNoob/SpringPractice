@@ -21,18 +21,21 @@ public class UserValidator implements Validator{
 		String beanName = errors.getObjectName();
 		System.out.println("validator: " + beanName);
 		
-		// 회원가입 시 생성되는 Bean을 검사 
-		if(beanName.equals("joinUserBean")) {
-			if(userBean.getUser_pw().equals(userBean.getUser_pw2()) == false) {
-				errors.rejectValue("user_pw", "NotEquals");
-				errors.rejectValue("user_pw2", "NotEquals");
-			}
-			
-			if(userBean.isUserIdExist() == false) {
-				errors.rejectValue("user_id", "CheckUserIdExistNotDone");
-			}
-		}
+		// 비밀번호 확인 기능: 회원가입 시 || 정보 수정 시  
+					if(beanName.equals("joinUserBean") || beanName.equals("modifyUserBean")) {
+						if(userBean.getUser_pw().equals(userBean.getUser_pw2()) == false) {
+							errors.rejectValue("user_pw", "NotEquals");
+							errors.rejectValue("user_pw2", "NotEquals");
+						}
+					}//
+					
+					if(beanName.equals("joinUserBean")) {
+						if(userBean.isUserIdExist() == false) {
+							errors.rejectValue("user_id", "CheckUserIdExistNotDone");
+						}
+					}//
+				}// eom
 
-	}
+			}
 
-}
+

@@ -15,7 +15,7 @@ public class UserService {
 	private UserDao userDao;
 	
 	@Resource(name="loginUserBean")
-	private UserBean loginUserBean;	// 로그인이 성공하면 여기에 데이터 담아야 하니까.
+	private UserBean loginUserBean;	// 로그인이 성공하면 로그인 한 사람의 정보를 여기에 담아야 하니까.
 	
 	public boolean checkUserIdExist(String user_id) {
 		
@@ -44,4 +44,18 @@ public class UserService {
 		}
 	}// eom
 	
+	public void getModifyUserInfo(UserBean modifyUserBean) {
+		UserBean tempModifyUserBean = userDao.getModifyUserInfo(loginUserBean.getUser_idx());
+		
+		modifyUserBean.setUser_id(tempModifyUserBean.getUser_id());
+		modifyUserBean.setUser_name(tempModifyUserBean.getUser_name());
+		modifyUserBean.setUser_idx(loginUserBean.getUser_idx());
+	}// eom
+	
+	public void modifyUserBeanInfo(UserBean modifyUserBean) {
+
+		modifyUserBean.setUser_idx(loginUserBean.getUser_idx());
+		
+		userDao.modifyUserInfo(modifyUserBean);
+	}// eom
 }

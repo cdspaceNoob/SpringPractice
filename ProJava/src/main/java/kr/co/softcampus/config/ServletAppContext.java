@@ -22,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import kr.co.softcampus.beans.UserBean;
+import kr.co.softcampus.interceptor.CheckLoginInterceptor;
 import kr.co.softcampus.interceptor.NavInterceptor;
 import kr.co.softcampus.mapper.BoardMapper;
 import kr.co.softcampus.mapper.NavMapper;
@@ -124,10 +125,16 @@ public class ServletAppContext implements WebMvcConfigurer{
 		// TODO Auto-generated method stub
 		WebMvcConfigurer.super.addInterceptors(registry);
 		
+		// 모든 페이지에 대해 nav bar를 불러오는 인터셉터.
 		NavInterceptor navInterceptor = new NavInterceptor(navService, loginUserBean);	// Interceptor를 등록하는 쪽에서 주입받고, 생성자에 넣어준다. 
-		
 		InterceptorRegistration reg1 = registry.addInterceptor(navInterceptor);
 		reg1.addPathPatterns("/**");
+		
+		// 모든 페이지에 대해 로그인 상태를 검증하는 인터셉터.
+		CheckLoginInterceptor checkLoginInterceptor = new CheckLoginInterceptor(loginUserBean);
+		InterceptorRegistration reg2 = registry.addInterceptor(checkLoginInterceptor);
+		reg2.addPathPatterns("/user/modify", "/user/logout", "/board/*");				// 이 경로에 대해서는 reg2 인터셉터가 작동한다.
+		reg2.excludePathPatterns("/board/main");										// 이 경로에 대해서는 작동하지 않는다. 
 	}
 	
 	@Bean	// db property와 messageSourge를 구별하기 위해.
