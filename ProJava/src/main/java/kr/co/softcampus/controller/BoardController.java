@@ -1,5 +1,7 @@
 package kr.co.softcampus.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class BoardController {
 		
 		String boardInfoName = boardService.getBoardInfoName(board_info_idx);
 		model.addAttribute("boardInfoName", boardInfoName);
+		
+		List<ContentBean> contentList = boardService.getContentList(board_info_idx);
+		model.addAttribute("contentList", contentList);
 		
 		return "board/main";	// return 할 때는 jsp의 절대 경로를 적어주는 것이므로 "board/main"을 다 적어준다. 
 	}

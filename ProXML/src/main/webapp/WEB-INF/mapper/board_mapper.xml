@@ -3,6 +3,7 @@
 						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 
+	<!-- 글 작성하기. -->
 	<insert id="addContentInfo" parameterType="kr.co.softcampus.beans.ContentBean">
 		<![CDATA[
 			insert into content_table(
@@ -24,6 +25,7 @@
 		]]>
 	</insert>
 	
+	<!-- 각 게시판의 메인에 표시될 게시판 이름 불러오기. -->
 	<select id="getBoardInfoName" parameterType="java.lang.Integer" resultType="java.lang.String">
 		<![CDATA[
 			select board_info_name 
@@ -32,5 +34,15 @@
 		]]>
 	</select>
 
+	<!-- 각 게시판의 글 목록 불러오기. -->
+	<select id="getContentList" parameterType="java.lang.Integer" resultType="kr.co.softcampus.beans.ContentBean">
+		<![CDATA[
+			select ct.content_idx, ct.content_subject, ut.user_name as content_writer_name, ct.content_date 
+				from content_table ct, user_table ut 
+				where ct.content_writer_idx = ut.user_idx 
+				and ct.content_idx = #{board_info_idx} 
+				order by ct.content_idx desc
+		]]>
+	</select>
 
 </mapper>
