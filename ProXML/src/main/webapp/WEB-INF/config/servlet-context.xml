@@ -97,5 +97,8 @@
 	<beans:bean class="org.springframework.context.support.MessageSourceAccessor">
 		<beans:constructor-arg ref="messageSource"/>
 	</beans:bean>
+	
+	<!-- 파일 업로드를 위한 StandardServletMultipartResolver 정의. -->
+	<beans:bean class="org.springframework.web.multipart.support.StandardServletMultipartResolver" id="multipartResolver"/> 
 
 </beans:beans>
