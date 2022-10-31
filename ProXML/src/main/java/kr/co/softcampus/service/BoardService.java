@@ -58,4 +58,8 @@ public class BoardService {
 		
 		boardDao.addContentInfo(writeContentBean);
 	}
+	
+	public String getBoardInfoName(int board_info_idx) {
+		return boardDao.getBoardInfoName(board_info_idx);
+	}//eom
 }

@@ -38,7 +38,7 @@ public class BoardService {
 		}
 		
 		return file_name;
-	}
+	}//eom
 	
 	public void addContentInfo(ContentBean writeContentBean) {
 //		System.out.println(writeContentBean.getContent_subject());
@@ -58,5 +58,9 @@ public class BoardService {
 		// board_idx는 자동으로 주입되어 있다. 
 		
 		boardDao.addContentInfo(writeContentBean);
-	}
+	}//eom
+	
+	public String getBoardInfoName(int board_info_idx) {
+		return boardDao.getBoardInfoName(board_info_idx);
+	}//eom
 }

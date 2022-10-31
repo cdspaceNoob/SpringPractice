@@ -15,4 +15,8 @@ public class BoardDao {
 	public void addContentInfo(ContentBean writeContentBean) {
 		sqlSessionTemplate.insert("board.addContentInfo", writeContentBean);
 	}
+	
+	public String getBoardInfoName(int board_info_idx) {
+		return sqlSessionTemplate.selectOne("board.getBoardInfoName", board_info_idx);
+	}
 }
