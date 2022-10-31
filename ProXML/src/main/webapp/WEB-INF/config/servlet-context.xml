@@ -35,8 +35,11 @@
 	<!-- properties 파일의 내용을 불러오기 위해 Bean으로 정의한다. -->
 	<beans:bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<beans:property name="location">
-			<beans:value>/WEB-INF/properties/db.properties</beans:value>
+		<beans:property name="locations">
+			<beans:list>
+				<beans:value>/WEB-INF/properties/db.properties</beans:value>
+				<beans:value>/WEB-INF/properties/option.properties</beans:value>
+			</beans:list>
 		</beans:property>
 	</beans:bean>
 
