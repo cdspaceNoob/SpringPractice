@@ -36,7 +36,7 @@
 							<c:forEach var="obj" items="${contentList }">
 								<tr>
 									<td class="text-center d-none d-md-table-cell">${obj.content_idx }</td>			<!-- 글 번호. -->
-									<td><a href='${root }board/read'>${obj.content_subject }</a></td>				<!-- 글 제목. -->
+									<td><a href='${root }board/read?board_info_idx=${board_info_idx}&content_idx=${obj.content_idx}'>${obj.content_subject }</a></td>				<!-- 글 제목. -->
 									<td class="text-center d-none d-md-table-cell">${obj.content_writer_name }</td>	<!-- 작성자. -->
 									<td class="text-center d-none d-md-table-cell">${obj.content_date }</td>		<!-- 등록일. -->
 								</tr>
